@@ -14,29 +14,12 @@ env:
         ./Manifest/user-service-deployment.yaml
         ./Manifest/user-service-service.yaml
 jobs:
-    buildImage:
-        permissions:
-            contents: read
-            id-token: write
-        runs-on: ubuntu-latest
-        steps:
-            - uses: actions/checkout@v3
-            - uses: azure/login@92a5484dfaf04ca78a94597f4f19fea633851fa2
-              name: Azure login
-              with:
-                client-id: ${{ secrets.AZURE_CLIENT_ID }}
-                subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
-                tenant-id: ${{ secrets.AZURE_TENANT_ID }}
-            - name: Build and push image to ACR
-              run: az acr build --image ${{ env.CONTAINER_NAME }}:${{ github.sha }} --registry ${{ env.AZURE_CONTAINER_REGISTRY }} -g ${{ env.ACR_RESOURCE_GROUP }} -f ./TwitterV2Processing.User/Dockerfile ./TwitterV2Processing.User
     deploy:
         permissions:
             actions: read
             contents: read
             id-token: write
         runs-on: ubuntu-latest
-        needs:
-            - buildImage
         steps:
             - uses: actions/checkout@v3
             - uses: azure/login@92a5484dfaf04ca78a94597f4f19fea633851fa2
@@ -62,4 +45,3 @@ jobs:
                 action: deploy
                 images: ${{ env.AZURE_CONTAINER_REGISTRY }}.azurecr.io/${{ env.CONTAINER_NAME }}:${{ github.sha }}
                 manifests: ${{ env.DEPLOYMENT_MANIFEST_PATH }}
-                namespace: namespace-workflow-1713113019840
