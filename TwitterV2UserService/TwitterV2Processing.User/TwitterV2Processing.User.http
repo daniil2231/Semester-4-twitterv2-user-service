@@ -1,0 +1,6 @@
+@TwitterV2Processing.User_HostAddress = http://localhost:5051
+
+GET {{TwitterV2Processing.User_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
