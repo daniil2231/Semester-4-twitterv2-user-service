@@ -7,7 +7,7 @@ ENV ASPNETCORE_URLS=http://+:8081
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
-COPY ["TwitterV2Processing.User/TwitterV2Processing.User.csproj", "./"]
+COPY ["TwitterV2Processing.User/TwitterV2Processing.User.csproj", "TwitterV2Processing.User/"]
 RUN dotnet restore "./TwitterV2Processing.User/TwitterV2Processing.User.csproj"
 COPY . .
 WORKDIR "/src/TwitterV2Processing.User"
