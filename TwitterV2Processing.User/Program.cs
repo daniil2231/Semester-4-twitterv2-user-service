@@ -1,5 +1,8 @@
+using Microsoft.Extensions.Options;
 using MongoDB.Driver;
 using TwitterV2Processing.User;
+using TwitterV2Processing.User.Business;
+using TwitterV2Processing.User.DbSettings;
 using TwitterV2Processing.User.Persistence;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -11,8 +14,13 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddTransient<IUserRepository, UserRepository>();
-//builder.Services.AddSingleton<IMongoClient, MongoClient>(_ => new MongoClient("mongodb://mongo:27017"));
+builder.Services.Configure<DatabaseSettings>(builder.Configuration.GetSection("UserDatabase"));
+builder.Services.AddSingleton<IDatabaseSettings>(sp => sp.GetRequiredService<IOptions<DatabaseSettings>>().Value);
+
+builder.Services.AddSingleton<IUserRepository, UserRepository>();
+builder.Services.AddSingleton<IUserService, UserService>();
+
+builder.Services.AddSingleton<IMongoClient>(new MongoClient(builder.Configuration.GetValue<string>("UserDatabase:ConnectionString")));
 
 var app = builder.Build();
 
@@ -23,7 +31,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-//app.UseHttpsRedirection();
+// app.UseHttpsRedirection();
 
 app.UseAuthorization();
 

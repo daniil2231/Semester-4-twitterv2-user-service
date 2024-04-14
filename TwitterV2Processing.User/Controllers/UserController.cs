@@ -1,12 +1,6 @@
-﻿using Microsoft.AspNetCore.Cors;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using MongoDB.Bson;
-using MongoDB.Driver;
-using System.Threading.Tasks;
-using System.Xml.Linq;
+﻿using Microsoft.AspNetCore.Mvc;
+using TwitterV2Processing.User.Business;
 using TwitterV2Processing.User.Models;
-using TwitterV2Processing.User.Persistence;
 
 namespace TwitterV2Processing.User.Controllers
 {
@@ -14,41 +8,32 @@ namespace TwitterV2Processing.User.Controllers
     [ApiController]
     public class UserController : ControllerBase
     {
-        //private readonly ILogger<UserController> _logger;
-        private readonly IUserRepository _userRepository;
-        public UserController(IUserRepository userRepository) {
-            //_logger = logger;
-            _userRepository = userRepository;
+        private readonly ILogger<UserController> _logger;
+        private readonly IUserService _userService;
+        public UserController(IUserService userService, ILogger<UserController> logger) {
+            _logger = logger;
+            _userService = userService;
         }
 
         [HttpGet]
-        public async Task<IEnumerable<UserModel>> GetAll() {
-          return await _userRepository.GetAllUsers<UserModel>("admin", "users");
+        public async Task<IActionResult> GetAll() {
+            var users = await _userService.GetUsers();
+            
+            return Ok(users);
         }
 
         [HttpGet("GetByUsername")]
-        public async Task<IEnumerable<UserModel>> GetByName(string name) {
-          var filter = Builders<UserModel>.Filter.Eq("Username", name);
-          return await _userRepository.GetFilteredUsers<UserModel>("admin", "users", filter);
+        public async Task<IActionResult> GetByName(string name) {
+            var user = await _userService.GetByUsername(name);
+            
+            return Ok(user);
         }
-
-        //[HttpPatch("UpdateUsername")]
-        //public async Task UpdateUsername(UserModel userData){
-        //  var filter = Builders<UserModel>.Filter.Eq("Id", userData.Id);
-        //  var update = Builders<UserModel>.Update.Set(x => x.Username, userData.Username);
-
-        //  await _userRepository.UpdateUser<UserModel>("admin", "users", filter, update);
-        //}
 
         [HttpPost]
-        public async Task CreateUser(UserModel userData) {
-          await _userRepository.CreateUser<UserModel>("admin", "users", userData);
-        }
-
-        [HttpDelete]
-        public async Task DeleteUser(string id) {
-          var filter = Builders<UserModel>.Filter.Eq("Id", id);
-          await _userRepository.DeleteUser<UserModel>("admin", "users", filter);
+        public async Task<IActionResult> CreateUser([FromBody] UserModel user) {
+            var newUser = await _userService.CreateUser(user);
+            
+            return Ok(newUser);
         }
     }
 }

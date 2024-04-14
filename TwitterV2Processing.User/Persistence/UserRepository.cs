@@ -1,44 +1,42 @@
-﻿using MongoDB.Driver;
+﻿using MongoDB.Bson;
+using MongoDB.Driver;
+using TwitterV2Processing.User.DbSettings;
+using TwitterV2Processing.User.Models;
 
 namespace TwitterV2Processing.User.Persistence
 {
     public class UserRepository : IUserRepository
     {
-        private readonly IConfiguration _configuration;
-        public UserRepository(IConfiguration config) {
-          _configuration = config;
+        private readonly IMongoCollection<UserModel> _users;
+        public UserRepository(IDatabaseSettings settings, IMongoClient client) {
+            var db = client.GetDatabase(settings.DatabaseName);
+            _users = db.GetCollection<UserModel>(settings.UsersCollectionName);
         }
 
-        public IMongoDatabase GetMongoDbInstance(string dbName) {
-          var connString = _configuration.GetConnectionString("MongoDB");
-          var client = new MongoClient(connString);
-          var db = client.GetDatabase(dbName);
-          return db;
+        public async Task<UserModel> CreateUser(UserModel user)
+        {
+            await _users.InsertOneAsync(user);
+            return user;
         }
 
-        private IMongoCollection<T> GetCollection<T>(string dbName, string collectionName) {
-          return GetMongoDbInstance(dbName).GetCollection<T>(collectionName);
+        public async Task DeleteUser(ObjectId id)
+        {
+            await _users.DeleteOneAsync(user => user.Id.Equals(id));
         }
 
-        public async Task<List<T>> GetAllUsers<T>(string dbName, string collectionName) {
-          var collection = GetCollection<T>(dbName, collectionName);
-          return await collection.Find(x => true).ToListAsync();
+        public async Task<List<UserModel>> GetAllUsers()
+        {
+            return await _users.Find(user => true).ToListAsync();
         }
 
-        public async Task<List<T>> GetFilteredUsers<T>(string dbName, string collectionName, FilterDefinition<T> filter) {
-          return await GetCollection<T>(dbName, collectionName).Find(filter).ToListAsync();
+        public async Task<UserModel> GetByUsername(string username)
+        {
+            return await _users.Find<UserModel>(user => user.Username == username).FirstOrDefaultAsync();
         }
 
-        public async Task UpdateUser<T>(string dbName, string collectionName, FilterDefinition<T> filter, UpdateDefinition<T> document) {
-          await GetCollection<T>(dbName, collectionName).UpdateOneAsync(filter, document);
-        }
-
-        public async Task CreateUser<T>(string dbName, string collectionName, T document) {
-          await GetCollection<T>(dbName, collectionName).InsertOneAsync(document);
-        }
-
-        public async Task DeleteUser<T>(string dbName, string collectionName, FilterDefinition<T> filter) {
-          await GetCollection<T>(dbName, collectionName).DeleteOneAsync(filter);
+        public async Task UpdateUser(ObjectId id, UserModel user)
+        {
+            await _users.ReplaceOneAsync(user => user.Id.Equals(id), user);
         }
     }
 }
