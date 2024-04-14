@@ -28,6 +28,7 @@ jobs:
         uses: docker/build-push-action@2cdde995de11925a030ce8070c3d77a52ffcf1c0
         with:
           context: .
+          file: ./TwitterV2Processing.User/Dockerfile
           push: true
           tags: daniil2231/twitterv2:user
           labels: ${{ steps.meta.outputs.labels }}
