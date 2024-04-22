@@ -6,10 +6,10 @@ name: twitterv2-user
     workflow_dispatch: {}
 env:
     ACR_RESOURCE_GROUP: DefaultResourceGroup-NEU
-    AZURE_CONTAINER_REGISTRY: acrworkflow1713113019840
+    #AZURE_CONTAINER_REGISTRY: acrworkflow1713113019840
     CLUSTER_NAME: twitterv2
     CLUSTER_RESOURCE_GROUP: DefaultResourceGroup-NEU
-    CONTAINER_NAME: image-workflow-1713113019840
+    #CONTAINER_NAME: image-workflow-1713113019840
     DEPLOYMENT_MANIFEST_PATH: |
         ./Manifest/user-service-deployment.yaml
         ./Manifest/user-service-service.yaml
@@ -43,5 +43,5 @@ jobs:
               name: Deploys application
               with:
                 action: deploy
-                images: ${{ env.AZURE_CONTAINER_REGISTRY }}.azurecr.io/${{ env.CONTAINER_NAME }}:${{ github.sha }}
+                images: daniil2231/twitterv2:user
                 manifests: ${{ env.DEPLOYMENT_MANIFEST_PATH }}
