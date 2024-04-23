@@ -16,7 +16,7 @@ config:
  ensure:
   maxErrorRate: 1
 
- scenarios:
+scenarios:
    - name: "Create user & get it"
      flow:
       - post:
