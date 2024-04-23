@@ -1,0 +1,34 @@
+config:
+ target: "http://10.101.266.177"
+ phases:
+  - name: "Warm up"
+    duration: 60
+    arrivalRate: 10
+    rampTo: 15
+  - name: "High load ramp up"
+    duration: 60
+    arrivalRate: 20
+    rampTo: 40
+  - name: "Sustained high load"
+    duration: 30
+    arrivalRate: 40
+    rampTo: 60
+ ensure:
+  maxErrorRate: 1
+
+ scenarios:
+   - name: "Create user & get it"
+     flow:
+      - post:
+         url: "/api/User"
+         json:
+          username: "test1"
+          password: "123"
+          role: "user"
+          followers: 0
+          following: 0
+         capture:
+          - json: "$.username"
+            as: "username"
+      - get:
+          url: "/api/User/GetByUsername?name={{ username }}"
