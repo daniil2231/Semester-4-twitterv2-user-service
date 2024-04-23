@@ -17,6 +17,4 @@ jobs:
     #with:
     # command: run LoadTests/user_post.yml
     run: |
-     ls
-     cd LoadTests
-     artillery run user_post.yml
+     artillery run LoadTests/user_post.yml
