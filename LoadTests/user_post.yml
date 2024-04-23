@@ -1,5 +1,5 @@
 config:
- target: "http://10.101.266.177"
+ target: "http://10.101.148.52"
  phases:
   - name: "Warm up"
     duration: 60
