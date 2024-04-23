@@ -5,9 +5,9 @@ on:
   branches: [ "main", "dev" ]
 
 jobs:
- build:
+ artillery:
  
-  runs-on: tester
+  runs-on: self-hosted
 
   steps:
   - name: Checkout
