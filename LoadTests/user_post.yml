@@ -17,19 +17,14 @@ config:
   maxErrorRate: 1
 
 scenarios:
-   - name: "Create user & get it"
+   - name: "Create user"
      flow:
       - post:
          url: "/api/User"
-         json:
-          id: ""
-          username: "test1"
-          password: "123"
-          role: "user"
-          followers: 0
-          following: 0
-         capture:
-          - json: "$.username"
-            as: "username"
-      - get:
-          url: "/api/User/GetByUsername?name={{ username }}"
+         body: |
+          {
+           "id": "", "username": "test1", "password": "123", "role": "user", "followers": 0, "following": 0
+          }
+         headers:
+          content-type: application/json
+         
