@@ -21,10 +21,10 @@ scenarios:
      flow:
       - post:
          url: "/api/User"
-         body: |
-          {
-           "id": "", "username": "test1", "password": "123", "role": "user", "followers": 0, "following": 0
-          }
-         headers:
-          content-type: application/json
-         
+         json:
+          id: ""
+          username: "test1"
+          password: "123"
+          role: "user"
+          followers: "0"
+          following: "0"
