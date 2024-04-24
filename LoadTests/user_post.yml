@@ -1,35 +1,5 @@
-#config:
- #target: http://10.101.148.52
- #phases:
- # - name: "Warm up"
-    #duration: 60
-   # arrivalRate: 10
-  #  rampTo: 15
- # - name: "High load ramp up"
-    #duration: 60
-   # arrivalRate: 20
-  #  rampTo: 40
- # - name: "Sustained high load"
-    #duration: 30
-   # arrivalRate: 40
-  #  rampTo: 60
- #ensure:
- # maxErrorRate: 1
-
-#scenarios:
-   #- name: "Create user"
-     #flow:
-     # - post:
-    #     url: "/api/User"
-   #      json:
-  #        id: ""
- #         username: "test1"
-#          password: "123"
-          #role: "user"
-          #followers: "0"
-          #following: "0"
 config:
-  target: http://10.101.148.52:8081
+  target: http://10.104.31.154:8081
   phases:
     - duration: 60
       arrivalRate: 10
