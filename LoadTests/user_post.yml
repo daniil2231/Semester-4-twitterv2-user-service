@@ -1,17 +1,17 @@
 config:
   target: http://10.104.31.154:8081
   phases:
+#    - duration: 60
+#      arrivalRate: 10
+#      rampTo: 15
+#      name: Warm up phase
+#    - duration: 60
+#      arrivalRate: 20
+#      rampTo: 40
+#      name: High load ramp
     - duration: 60
-      arrivalRate: 10
-      rampTo: 15
-      name: Warm up phase
-    - duration: 60
-      arrivalRate: 20
-      rampTo: 40
-      name: High load ramp
-    - duration: 30
-      arrivalRate: 50
-      rampTo: 60
+      arrivalRate: 400
+      rampTo: 1000
       name: Sustained high load
   plugins:
     ensure: {}
@@ -23,12 +23,21 @@ config:
         - http.response_time.p95: 75
 scenarios:
   - flow:
+    - get:
+       url: "/api/User/GetByUsername"
+       json:
+ #       id: ""
+        username: "t1"
+        password: "123"
+ #       role: "user"
+ #       followers: "0"
+ #       following: "0"
     - post:
        url: "/api/User"
        json:
-        id: ""
-        username: "t1"
-        password: "123"
-        role: "user"
-        followers: "0"
-        following: "0"
+ #       id: ""
+ #       username: "t1"
+ #       password: "123"
+ #       role: "user"
+ #       followers: "0"
+ #       following: "0"
