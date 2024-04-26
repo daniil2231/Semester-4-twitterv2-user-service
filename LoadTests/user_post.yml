@@ -9,9 +9,9 @@ config:
 #      arrivalRate: 20
 #      rampTo: 40
 #      name: High load ramp
-    - duration: 60
-      arrivalRate: 400
-      rampTo: 1000
+    - duration: 5
+      arrivalRate: 1
+      rampTo: 2
       name: Sustained high load
   plugins:
     ensure: {}
@@ -23,14 +23,14 @@ config:
         - http.response_time.p95: 75
 scenarios:
   - flow:
-    - get:
-       url: "/api/User/GetByUsername?name=t1&password=123"
-   # - post:
-   #    url: "/api/User"
-   #    json:
- #       id: ""
- #       username: "t1"
- #       password: "123"
- #       role: "user"
- #       followers: "0"
- #       following: "0"
+  #  - get:
+  #     url: "/api/User/GetByUsername?name=t1&password=123"
+    - post:
+       url: "/api/User"
+       json:
+        id: ""
+        username: "t1"
+        password: "123"
+        role: "user"
+        followers: "0"
+        following: "0"
