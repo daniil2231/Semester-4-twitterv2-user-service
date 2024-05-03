@@ -8,12 +8,9 @@ jobs:
   test:
     runs-on: self-hosted
     steps:
-    - name: Jmeter test
-      run: |
-          ls
-      #- uses: actions/checkout@v3
-     # - name: Run JMeter Tests
-     #   uses: rbhadti94/apache-jmeter-action@v0.5.0
-    #    with:
-   #       testFilePath: JmeterTestFiles/TwitterV2.jmx
-  #        outputReportsFolder: JmeterTestFiles/
+      - uses: actions/checkout@v3
+      - name: Run JMeter Tests
+        uses: rbhadti94/apache-jmeter-action@v0.5.0
+        with:
+          testFilePath: JmeterTestFiles/TwitterV2.jmx
+          outputReportsFolder: JmeterTestFiles/
