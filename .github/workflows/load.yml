@@ -12,9 +12,9 @@ jobs:
   steps:
   - name: Checkout
     uses: actions/checkout@v3
-  - name: Run load test
-    #uses: artilleryio/action-cli@v1.1.1
-    #with:
-    # command: run LoadTests/user_post.yml
+  - name: Run load test posts
     run: |
      artillery run LoadTests/user_post.yml
+  - name: Run load test gets
+    run: |
+     artillery run LoadTests/user_get.yml
