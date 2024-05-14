@@ -2,9 +2,6 @@
 using System.Net;
 using TwitterV2Processing.User.Models;
 using Microsoft.AspNetCore.Mvc.Testing;
-using MongoDB.Bson;
-using Microsoft.Extensions.Hosting;
-using NUnit.Framework.Interfaces;
 
 namespace TwitterV2Processing.User.Tests
 {
@@ -34,12 +31,11 @@ namespace TwitterV2Processing.User.Tests
             var createRes = await _client.PostAsJsonAsync("/api/User", newUser);
             createRes.EnsureSuccessStatusCode();
 
+            // Act
             var response = await _client.GetAsync("/api/User");
 
-            // Act
-            var users = await response.Content.ReadFromJsonAsync<List<UserModel>>();
-
             // Assert
+            var users = await response.Content.ReadFromJsonAsync<List<UserModel>>();
             Assert.Multiple(() =>
             {
                 Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.OK));
@@ -65,12 +61,14 @@ namespace TwitterV2Processing.User.Tests
                 postRes.EnsureSuccessStatusCode();
             }
 
+            // Act
             var res = await _client.GetAsync("/api/User");
 
-            // Act
-            var users = await res.Content.ReadFromJsonAsync<List<UserModel>>();
-
             // Assert
+            var users = await res.Content.ReadFromJsonAsync<List<UserModel>>();
+            // If any of the assertions fail, the test will still continue running and will report all the failed assertions at the end.
+            // This allows you to get a complete picture of what went wrong in the test, rather than stopping at the first failure.
+            // Useful when testing multiple components such as in an integration test.
             Assert.Multiple(() =>
             {
                 Assert.That(res.StatusCode, Is.EqualTo(HttpStatusCode.OK));

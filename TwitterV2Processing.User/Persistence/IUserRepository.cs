@@ -1,4 +1,5 @@
 ﻿using MongoDB.Bson;
+using MongoDB.Driver;
 using TwitterV2Processing.User.Models;
 
 namespace TwitterV2Processing.User.Persistence
@@ -9,6 +10,6 @@ namespace TwitterV2Processing.User.Persistence
         Task<UserModel> GetByUsername(string username);
         Task<UserModel> CreateUser(UserModel user);
         Task UpdateUser(ObjectId id, UserModel user);
-        Task DeleteUser(ObjectId id);
+        Task<DeleteResult> DeleteUser(string username);
     }
 }

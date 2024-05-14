@@ -1,4 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
+using MongoDB.Driver;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
 using TwitterV2Processing.User.Business;
 using TwitterV2Processing.User.Models;
 
@@ -10,9 +16,13 @@ namespace TwitterV2Processing.User.Controllers
     {
         private readonly ILogger<UserController> _logger;
         private readonly IUserService _userService;
-        public UserController(IUserService userService, ILogger<UserController> logger) {
+        private readonly IConfiguration _configuration;
+
+        public UserController(IUserService userService, ILogger<UserController> logger, IConfiguration configuration) {
             _logger = logger;
             _userService = userService;
+            _configuration = configuration;
+
         }
 
         [HttpGet]
@@ -22,9 +32,10 @@ namespace TwitterV2Processing.User.Controllers
             return Ok(users);
         }
 
+        // Placeholder Login method
         [HttpGet("GetByUsername")]
-        public async Task<IActionResult> GetByName(string name) {
-            var user = await _userService.GetByUsername(name);
+        public async Task<IActionResult> GetByName(string name, string password) {
+            var user = await _userService.GetByUsername(name, password);
             
             return Ok(user);
         }
@@ -34,6 +45,14 @@ namespace TwitterV2Processing.User.Controllers
             var newUser = await _userService.CreateUser(user);
             
             return Ok(newUser);
+        }
+
+        [HttpDelete]
+        public async Task<DeleteResult> DeleteUser(string username)
+        {
+            var res = await _userService.DeleteUser(username);
+
+            return res;
         }
     }
 }

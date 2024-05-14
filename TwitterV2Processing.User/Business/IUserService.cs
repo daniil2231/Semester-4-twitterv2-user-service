@@ -1,4 +1,5 @@
-﻿using TwitterV2Processing.User.Models;
+﻿using MongoDB.Driver;
+using TwitterV2Processing.User.Models;
 
 namespace TwitterV2Processing.User.Business
 {
@@ -6,8 +7,10 @@ namespace TwitterV2Processing.User.Business
     {
         public Task<List<UserModel>> GetUsers();
 
-        public Task<UserModel> GetByUsername(string username);
+        public Task<UserModel> GetByUsername(string username, string password);
 
         public Task<UserModel> CreateUser(UserModel user);
+
+        public Task<DeleteResult> DeleteUser(string username);
     }
 }

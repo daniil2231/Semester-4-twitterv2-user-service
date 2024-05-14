@@ -19,9 +19,9 @@ namespace TwitterV2Processing.User.Persistence
             return user;
         }
 
-        public async Task DeleteUser(ObjectId id)
+        public async Task<DeleteResult> DeleteUser(string username)
         {
-            await _users.DeleteOneAsync(user => user.Id.Equals(id));
+            return await _users.DeleteOneAsync(user => user.Username.Equals(username));
         }
 
         public async Task<List<UserModel>> GetAllUsers()

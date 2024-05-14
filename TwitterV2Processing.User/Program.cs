@@ -1,6 +1,5 @@
 using Microsoft.Extensions.Options;
 using MongoDB.Driver;
-using TwitterV2Processing.User;
 using TwitterV2Processing.User.Business;
 using TwitterV2Processing.User.DbSettings;
 using TwitterV2Processing.User.Persistence;
@@ -33,6 +32,7 @@ if (app.Environment.IsDevelopment())
 
 // app.UseHttpsRedirection();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
