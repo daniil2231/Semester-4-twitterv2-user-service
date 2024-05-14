@@ -1,0 +1,27 @@
+config:
+  target: http://10.104.31.154:8081
+  phases:
+    - duration: 30
+      arrivalRate: 100
+      rampTo: 150
+      name: Warm up phase
+    - duration: 30
+      arrivalRate: 200
+      rampTo: 400
+      name: High load ramp
+    - duration: 60
+      arrivalRate: 300
+      rampTo: 500
+      name: Sustained high load
+  plugins:
+    ensure: {}
+    apdex: {}
+    http.codes: {}
+  ensure:
+      thresholds:
+        - http.response_time.p99: 100
+        - http.response_time.p95: 75
+scenarios:
+  - flow:
+    - get:
+       url: "/api/User/GetByUsername?name=t1&password=123"

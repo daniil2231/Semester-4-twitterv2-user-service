@@ -1,0 +1,20 @@
+name: Load Test
+
+on:
+ push:
+  branches: [ "main", "dev" ]
+
+jobs:
+ artillery:
+ 
+  runs-on: self-hosted
+
+  steps:
+  - name: Checkout
+    uses: actions/checkout@v3
+  - name: Run load test posts
+    run: |
+     artillery run LoadTests/user_post.yml
+  - name: Run load test gets
+    run: |
+     artillery run LoadTests/user_get.yml
