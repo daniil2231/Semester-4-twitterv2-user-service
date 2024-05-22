@@ -1,0 +1,14 @@
+name: Netlab Deployment
+
+on:
+ push:
+  branches: [ "main", "dev" ]
+
+jobs:
+ deply:
+  runs-on: self-hosted
+  steps:
+  - name: Deploy updates to the NetLab Kubernetes environment
+    run: |
+     minikube kubectl -- apply -f ./Manifest/
+      
