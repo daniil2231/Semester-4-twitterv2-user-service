@@ -29,7 +29,9 @@ spec:
           name: user-service
           ports:
             - containerPort: 8081
-          resources: {}
+          resources:
+            requests:
+              cpu: 10m
           imagePullPolicy: Always
       imagePullSecrets:
         - name: regcred
