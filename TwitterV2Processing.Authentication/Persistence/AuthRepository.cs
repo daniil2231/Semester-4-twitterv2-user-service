@@ -22,7 +22,7 @@ namespace TwitterV2Processing.Authentication.Persistence
 
         public async Task<DeleteResult> DeleteUserAccount(string username)
         {
-            return await _users.DeleteOneAsync(user => user.Username.Equals(username));
+            return await _users.DeleteManyAsync(user => user.Username.Equals(username));
         }
 
         public async Task<UserAccount> GetByUsername(string username)
