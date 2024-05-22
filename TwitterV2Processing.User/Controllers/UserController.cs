@@ -40,7 +40,7 @@ namespace TwitterV2Processing.User.Controllers
         }
 
         [HttpDelete]
-        [Authorize(Roles = "Administrator,User")]
+        [Authorize]
         public async Task<DeleteResult> DeleteUser(string username)
         {
             var res = await _userService.DeleteUser(username);
