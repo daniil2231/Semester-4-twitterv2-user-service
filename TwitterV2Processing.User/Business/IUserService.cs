@@ -7,7 +7,7 @@ namespace TwitterV2Processing.User.Business
     {
         public Task<List<UserModel>> GetUsers();
 
-        public Task<UserModel> GetByUsername(string username, string password);
+        public Task<UserModel> GetByUsername(string username);
 
         public Task<UserModel> CreateUser(UserModel user);
 

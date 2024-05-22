@@ -54,16 +54,9 @@ namespace TwitterV2Processing.User.Business
             return _userRepository.CreateUser(userWithEncryptedPass);
         }
 
-        public Task<UserModel> GetByUsername(string username, string password)
+        public Task<UserModel> GetByUsername(string username)
         {
-            Task<UserModel> returnedUser = _userRepository.GetByUsername(username);
-            if (PasswordHasher.Validate(password, returnedUser.Result.Password))
-            {
-                return _userRepository.GetByUsername(username);
-            }
-            else {
-                return null;
-            }
+            return _userRepository.GetByUsername(username);
         }
 
         public Task<List<UserModel>> GetUsers()

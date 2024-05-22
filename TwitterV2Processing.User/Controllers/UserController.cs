@@ -19,17 +19,15 @@ namespace TwitterV2Processing.User.Controllers
         }
 
         [HttpGet]
-        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> GetAll() {
             var users = await _userService.GetUsers();
             
             return Ok(users);
         }
 
-        // Placeholder Login method
         [HttpGet("GetByUsername")]
-        public async Task<IActionResult> GetByName(string name, string password) {
-            var user = await _userService.GetByUsername(name, password);
+        public async Task<IActionResult> GetByName(string name) {
+            var user = await _userService.GetByUsername(name);
             
             return Ok(user);
         }
