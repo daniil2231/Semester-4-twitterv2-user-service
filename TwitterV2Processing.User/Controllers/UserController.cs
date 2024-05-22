@@ -1,8 +1,6 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MongoDB.Driver;
-using System.Security.Claims;
-using System.Text;
 using TwitterV2Processing.User.Business;
 using TwitterV2Processing.User.Models;
 
@@ -14,16 +12,14 @@ namespace TwitterV2Processing.User.Controllers
     {
         private readonly ILogger<UserController> _logger;
         private readonly IUserService _userService;
-        private readonly IConfiguration _configuration;
 
-        public UserController(IUserService userService, ILogger<UserController> logger, IConfiguration configuration) {
+        public UserController(IUserService userService, ILogger<UserController> logger) {
             _logger = logger;
             _userService = userService;
-            _configuration = configuration;
-
         }
 
         [HttpGet]
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> GetAll() {
             var users = await _userService.GetUsers();
             
@@ -46,6 +42,7 @@ namespace TwitterV2Processing.User.Controllers
         }
 
         [HttpDelete]
+        [Authorize(Roles = "Administrator,User")]
         public async Task<DeleteResult> DeleteUser(string username)
         {
             var res = await _userService.DeleteUser(username);

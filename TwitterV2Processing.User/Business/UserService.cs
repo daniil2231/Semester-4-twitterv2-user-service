@@ -36,9 +36,21 @@ namespace TwitterV2Processing.User.Business
             return _userRepository.DeleteUser(username);
         }
 
+        public async void CreateUserAsync(string username, string password, string role)
+        {
+            using (var producer = new ProducerBuilder<string, string>(producerConfig).Build())
+            {
+                var message = new { Username = username, Password = password, Role = role };
+                var messageJson = Newtonsoft.Json.JsonConvert.SerializeObject(message);
+
+                await producer.ProduceAsync("user_creation", new Message<string, string> { Value = messageJson });
+            }
+        }
+
         public Task<UserModel> CreateUser(UserModel user)
         {
             UserModel userWithEncryptedPass = new UserModel(user.Id, user.Username, PasswordHasher.Hash(user.Password), user.Role, user.Followers, user.Following);
+            CreateUserAsync(userWithEncryptedPass.Username, userWithEncryptedPass.Password, userWithEncryptedPass.Role);
             return _userRepository.CreateUser(userWithEncryptedPass);
         }
 
