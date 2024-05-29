@@ -89,9 +89,6 @@ namespace TwitterV2Processing.User.Tests
 
             // Assert
             var users = await res.Content.ReadFromJsonAsync<List<UserModel>>();
-            // If any of the assertions fail, the test will still continue running and will report all the failed assertions at the end.
-            // This allows you to get a complete picture of what went wrong in the test, rather than stopping at the first failure.
-            // Useful when testing multiple components such as in an integration test.
             Assert.Multiple(() =>
             {
                 Assert.That(res.StatusCode, Is.EqualTo(HttpStatusCode.OK));
